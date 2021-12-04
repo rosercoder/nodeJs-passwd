@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码生成器/随机密码生成</title>
+
+    <script src="/lib/jquery/jquery.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.js"></script>
+    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="/">Home</a></li>
+                    <li role="presentation"><a href="/doc.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>Password Generater</h1>
+            <p>the official tool to generate passwd</p>
+            <p>
+                <a class="btn btn-lg btn-primary" href="/doc.html" role="button">View doc</a>
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="passwdNumber" class="col-sm-2 control-label">生成密码的数目:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="passwdNumber" placeholder="" value="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="passwdLength" class="col-sm-2" style="text-align: right">密码长度:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="passwdLength" placeholder="" value="16">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="passwdLength" class="col-sm-2" style="text-align: right">使用的字符列表</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="characterString" placeholder="" value="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="0123456789" onclick="changeChars(this)" id="number" checked>数字 0123456789
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="abcdefghijklmnopqrstuvwxyz" onclick="changeChars(this)" id="lowercaseLetter" checked>小写字母 abcdefghijklmnopqrstuvwxyz
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ" onclick="changeChars(this)" id="uppercaseLetter" checked>大写字母 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="~!@#$%^&*()_+" onclick="changeChars(this)" id="character" checked>常用符号 ~!@#$%^&*()_+
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn btn-primary" onclick="generatePwd()">生成</button>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="5" id="result"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2021 Company, Inc.</p>
+        </footer>
+
+    </div> <!-- /container -->
+
+
+    <script>
+        let characterString = document.getElementById("characterString").value
+
+        function changeChars(){
+            const numNode = document.getElementById("number")
+            const lowercaseLetterNode = document.getElementById("lowercaseLetter")
+            const uppercaseLetterNode = document.getElementById("uppercaseLetter")
+            const character = document.getElementById("character")
+
+            let charString = document.getElementById("characterString")
+
+            characterString = ""
+            if(numNode.checked){
+                characterString += numNode.value
+            }
+            if (lowercaseLetterNode.checked){
+                characterString += lowercaseLetterNode.value
+            }
+            if (uppercaseLetterNode.checked){
+                characterString += uppercaseLetterNode.value
+            }
+            if (character.checked){
+                characterString += character.value
+            }
+
+            charString.value = characterString
+        }
+        function generatePwd(){
+            let length = document.getElementById("passwdLength").value
+            let number = document.getElementById("passwdNumber").value
+            const result = document.getElementById("result")
+
+            let passwd_list = ''
+
+            for (let i = 0; i < number; i++) {
+                let passwd = '';
+                for (let j = 0; j < length; j++) {
+                    randomNum = Math.floor(Math.random() * characterString.length);
+                    passwd+= characterString[randomNum]
+                }
+                passwd_list += passwd
+                passwd_list += "\n"
+            }
+            result.value = passwd_list
+        }
+        window.onload = function (){
+            generatePwd()
+        }
+
+    </script>
+
+</body>
+</html>
